@@ -1,4 +1,4 @@
-const RandomForestAsync = require('./dist/async.js')
+const RandomForestAsync = require('./src/async.js')
 
 class RandomForestClassifier extends RandomForestAsync {
   constructor (opts) {

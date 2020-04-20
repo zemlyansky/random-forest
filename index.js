@@ -1,4 +1,4 @@
-const RandomForestBase = require('./dist/base.js')
+const RandomForestBase = require('./src/base.js')
 
 class RandomForestClassifier extends RandomForestBase {
   constructor (opts) {

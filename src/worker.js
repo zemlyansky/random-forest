@@ -2,15 +2,17 @@ const RandomForestBase = require('./base.js')
 
 let forest
 
-function processMessage (msg) {
-  if ((typeof msg === 'object') && msg.type) {
-    forest = new RandomForestBase(msg)
+function processMessage (message) {
+  const data = message.data
+  if ((typeof data === 'object') && data.type) {
+    forest = new RandomForestBase(data)
     postMessage('')
-  } else if (Array.isArray(msg) && Array.isArray(msg[0]) && (msg.length === 2)) {
-    forest.train(msg[0], msg[1])
+  } else if (Array.isArray(data) && Array.isArray(data[0]) && (data.length === 2)) {
+    forest = new RandomForestBase(data)
+    forest.train(data[0], data[1])
     postMessage('')
-  } else if (Array.isArray(msg)) {
-    const ypred = forest.predict(msg)
+  } else if (Array.isArray(data)) {
+    const ypred = forest.predict(data)
     postMessage(ypred)
   }
 }

@@ -1,0 +1,7 @@
+dist/
+example/bundle/
+node_modules/
+wrapper/
+wasm/
+*.swp
+npm-debug.log

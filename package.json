@@ -1,26 +1,27 @@
 {
   "name": "random-forest",
   "version": "0.0.1",
-  "description": "Random forest",
+  "description": "Random Forest with WebAssembly and WebWorkers",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rimraf wrapper && rimraf dist && rimraf wasm",
+    "mkdirs": "mkdir wrapper && mkdir dist && mkdir wasm",
     "build-native": "make build",
-    "build-base": "browserify src/base.js -t brfs -s RandomForestBase -o dist/base.js",
-    "build-worker": "browserify src/worker.js -t brfs -o dist/worker.js",
-    "build-async": "browserify src/async.js -t brfs -s RandomForestAsync -o dist/async.js",
-    "build-example-base": "browserify example/example-base.js -o example/base.bundle.js",
-    "build-example-async": "browserify example/example-async.js -o example/async.bundle.js",
-    "clean": "rm dist/worker.js && rm wasm/ -r",
-    "build": "npm run build-native && npm run build-base && npm run build-worker && npm run build-async && npm run build-example-base && build-example-async && npm run clean"
+    "prepare-wasm": "node prepare-wasm.js",
+    "build-base": "browserify src/base.js -s RandomForestBase -o dist/base.js",
+    "build-worker": "browserify src/worker.js -o dist/worker.js",
+    "prepare-worker": "node prepare-worker.js",
+    "build-async": "browserify src/async.js -s RandomForestAsync -o dist/async.js",
+    "build-example-base": "browserify example/example-base.js -o example/bundle/example-base.js",
+    "build-example-async": "browserify example/example-async.js -o example/bundle/example-async.js",
+    "build": "npm run clean && npm run mkdirs && npm run build-native && npm run prepare-wasm && npm run build-base && npm run build-worker && npm run prepare-worker && npm run build-async && npm run build-example-base && npm run build-example-async",
+    "prepublish": "rimraf dist && rimraf wasm && rimraf example/bundle"
   },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "brfs": "^2.0.2",
-    "bthreads": "^0.5.1",
-    "ml-matrix": "^6.4.1",
-    "ml-random-forest": "^2.0.1",
-    "workerify": "^1.1.0"
+  "author": "Anton Zemlyansky",
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "^16.5.1",
+    "rimraf": "^3.0.2"
   }
 }

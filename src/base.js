@@ -1,10 +1,10 @@
 const Module = require('../wasm/native.js')
 const { uintify, calculateMaxFeatures } = require('./util.js')
 
-const fs = require('fs')
-const path = require('path')
-const bin = fs.readFileSync(path.resolve(__dirname, '../wasm/native.wasm'))
-const m = Module({ wasmBinary: bin })
+// const fs = require('fs')
+// const path = require('path')
+const bin = require('../wrapper/native.bin.js')
+const m = Module({ wasmBinary: bin.data })
 
 const _create = m.cwrap('create', 'number', ['number', 'number', 'number', 'number'])
 const _train = m.cwrap('train', 'number', ['number', 'array', 'array', 'number', 'number', 'number', 'boolean', 'number', 'number'])

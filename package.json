@@ -1,7 +1,8 @@
 {
   "name": "random-forest",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Random Forest with WebAssembly and WebWorkers",
+  "keywords": ["randomforest", "ensembles", "ml", "threads", "worker"],
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -17,6 +18,10 @@
     "build-example-async": "browserify example/example-async.js -o example/bundle/example-async.js",
     "build": "npm run clean && npm run mkdirs && npm run build-native && npm run prepare-wasm && npm run build-base && npm run build-worker && npm run prepare-worker && npm run build-async && npm run build-example-base && npm run build-example-async",
     "prepublish": "rimraf dist && rimraf wasm && rimraf example/bundle"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zemlyansky/random-forest"
   },
   "author": "Anton Zemlyansky",
   "license": "MIT",

@@ -57,8 +57,18 @@ void train (RandomForest* forest, float* X, float* y, int nSamples, int nFeature
 
 float predict (RandomForest* forest, float* X) {
   float ypred;
-  forest -> predict(X, ypred);
+  forest -> predict(X, ypred, -1);
   return ypred;
+}
+
+float* predictProba (RandomForest* forest, float* X, int nClasses) {
+  float* probs = new float[nClasses];
+  for (int i = 0; i < nClasses; i++) {
+    float ypred;
+    forest -> predict(X, ypred, i);
+    probs[i] = ypred;
+  }
+  return probs;
 }
 
 void save (RandomForest* forest) {

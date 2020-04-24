@@ -2,7 +2,7 @@
 CC = emcc
 CXX = em++
 
-EXPORTED_FUNCTIONS="['_create', '_train', '_predict', '_save', '_load']"
+EXPORTED_FUNCTIONS="['_create', '_train', '_predict', '_predictProba', '_save', '_load']"
 
 CFLAGS = -O3 -Wall -fPIC --memory-init-file 0 -std=c++11 
 EMCFLAGS = -s ALLOW_MEMORY_GROWTH=1 -s FORCE_FILESYSTEM=1 -s EXPORTED_FUNCTIONS=$(EXPORTED_FUNCTIONS) -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap", "FS_readFile", "FS_writeFile"]' -s MODULARIZE=1 -s BINARYEN_ASYNC_COMPILATION=0

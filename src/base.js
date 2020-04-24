@@ -1,14 +1,14 @@
+const importance = require('importance')
 const Module = require('../wasm/native.js')
-const { uintify, calculateMaxFeatures } = require('./util.js')
+const { uintify, calculateMaxFeatures, detectType, Encoder, normalizeProbs } = require('./util.js')
 
-// const fs = require('fs')
-// const path = require('path')
 const bin = require('../wrapper/native.bin.js')
 const m = Module({ wasmBinary: bin.data })
 
 const _create = m.cwrap('create', 'number', ['number', 'number', 'number', 'number'])
 const _train = m.cwrap('train', 'number', ['number', 'array', 'array', 'number', 'number', 'number', 'boolean', 'number', 'number'])
 const _predict = m.cwrap('predict', 'number', ['number', 'array'])
+const _predictProba = m.cwrap('predictProba', 'array', ['number', 'array', 'number'])
 const _save = m.cwrap('save', null, ['number'])
 const _load = m.cwrap('load', null, ['number'])
 
@@ -31,6 +31,11 @@ module.exports = class RandomForestBase {
   }
 
   train (X, y) {
+    this.type = (typeof this.type === 'string') && (this.type !== 'auto') ? this.type : detectType(y)
+    this.Xencoder = new Encoder()
+    this.yencoder = new Encoder()
+    X = this.Xencoder.fitTransform(X, this.categorical)
+    y = this.yencoder.fitTransform(y).flat()
     this.nSamples = X.length
     this.nFeatures = X[0].length
     this.nClasses = (this.type === 'regression') ? 1 : Array.from(new Set(y)).length
@@ -51,11 +56,29 @@ module.exports = class RandomForestBase {
 
   predict (X) {
     if (typeof X === 'number') {
-      return _predict(this.model, uintify([X]))
-    } else if (!Array.isArray(X[0])) {
-      return _predict(this.model, uintify(X))
+      throw new Error('X should be array, try [value]')
+    } else if (Array.isArray(X) && !Array.isArray(X[0])) {
+      X = this.Xencoder.transform([X])[0]
+      return this.yencoder.inverseTransform([_predict(this.model, uintify(X))])[0]
     } else {
-      return X.map(x => _predict(this.model, uintify(x)))
+      X = this.Xencoder.transform(X)
+      return this.yencoder.inverseTransform(X.map(x => _predict(this.model, uintify(x))))
+    }
+  }
+
+  predictProba (X) {
+    if (typeof X === 'number') {
+      throw new Error('X should be array, try [value]')
+    } else if (Array.isArray(X) && !Array.isArray(X[0])) {
+      X = this.Xencoder.transform([X])[0]
+      const addr = _predictProba(this.model, uintify(X.flat()), this.nClasses)
+      const data = []
+      for (let i = 0; i < this.nClasses; i++) {
+        data.push(m.HEAPF32[addr / Float32Array.BYTES_PER_ELEMENT + i])
+      }
+      return normalizeProbs(data)
+    } else {
+      return X.map(x => this.predictProba(x))
     }
   }
 
@@ -68,5 +91,19 @@ module.exports = class RandomForestBase {
   load (model) {
     m.FS_writeFile('model.txt', model)
     _load(this.model)
+  }
+
+  getFeatureImportances (X, y, opts = {}) {
+    if (this.nSamples) {
+      if (opts.kind === 'ce') {
+        console.log('Transform y for importance')
+        y = this.yencoder.transform(y).flat()
+        return importance(this, X, y, opts)
+      } else {
+        return importance(this, X, y, opts)
+      }
+    } else {
+      throw new Error('Train the model first')
+    }
   }
 }

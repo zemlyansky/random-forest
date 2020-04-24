@@ -15,7 +15,7 @@ function generateData (nSamples, nFeatures) {
   return [X, y]
 }
 
-const nTrainSamples = 10000
+const nTrainSamples = 1000
 const nTrainFeatures = 10
 const [Xtrain, ytrain] = generateData(nTrainSamples, nTrainFeatures)
 
@@ -30,7 +30,8 @@ const rf = new RandomForestClassifier({
 })
 rf.train(Xtrain, ytrain)
 const ypred = rf.predict(Xtest)
-console.log(ypred, ytest)
+// console.log(ypred, ytest)
+console.log(rf.getFeatureImportances(Xtest, ytest, {kind: 'ce'}))
 console.timeEnd('Time sync')
 
 /*

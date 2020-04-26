@@ -31,7 +31,7 @@ function detectType (y) {
     return 'classification'
   } else {
     const nUnique = Array.from(new Set(y)).length
-    if ((nUnique / y.length) < 0.2) {
+    if ((nUnique / y.length) < 0.2 && nUnique < 20) {
       return 'classification'
     } else {
       return 'regression'

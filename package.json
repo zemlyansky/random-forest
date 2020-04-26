@@ -1,6 +1,6 @@
 {
   "name": "random-forest",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Random Forest with WebAssembly and WebWorkers",
   "keywords": [
     "randomforest",
@@ -24,7 +24,7 @@
     "build-example-async": "browserify example/example-async.js -o example/bundle/example-async.js",
     "build": "npm run clean && npm run mkdirs && npm run build-native && npm run prepare-wasm && npm run build-base && npm run build-worker && npm run prepare-worker && npm run build-async && npm run build-example-base && npm run build-example-async",
     "prepublish": "rimraf dist && rimraf example/bundle",
-    "watch": "nodemon --watch . --ext js,csv --exec 'node ./example/example-base.js'"
+    "watch": "nodemon --watch . --ext js,csv --exec 'node ./example/example-synth.js'"
   },
   "repository": {
     "type": "git",
@@ -34,8 +34,9 @@
   "license": "MIT",
   "devDependencies": {
     "browserify": "^16.5.1",
-    "rimraf": "^3.0.2",
-    "csv-parse": "^4.8.9"
+    "csv-parse": "^4.8.9",
+    "mkdata": "0.0.4",
+    "rimraf": "^3.0.2"
   },
   "dependencies": {
     "importance": "0.0.2"

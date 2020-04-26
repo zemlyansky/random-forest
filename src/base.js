@@ -13,7 +13,6 @@ const _save = m.cwrap('save', null, ['number'])
 const _load = m.cwrap('load', null, ['number'])
 
 const defaults = {
-  type: 'classification',
   nEstimators: 100,
   maxDepth: 10,
   maxFeatures: 'auto',
@@ -24,6 +23,9 @@ const defaults = {
 module.exports = class RandomForestBase {
   constructor (opts = {}) {
     const options = Object.assign({}, defaults, opts)
+    if (options.maxDepth > 20) {
+      throw new Error('maxDepth should be <=20')
+    }
     for (const k in options) {
       this[k] = options[k]
     }

@@ -1,6 +1,6 @@
 {
   "name": "random-forest",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Random Forest with WebAssembly and WebWorkers",
   "keywords": [
     "randomforest",
@@ -39,6 +39,6 @@
     "rimraf": "^3.0.2"
   },
   "dependencies": {
-    "importance": "0.0.2"
+    "importance": "0.0.4"
   }
 }

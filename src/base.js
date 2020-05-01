@@ -96,14 +96,15 @@ module.exports = class RandomForestBase {
   }
 
   getFeatureImportances (X, y, opts = {}) {
+    // No need to transform X here because importance does this when calling model.predict()
     if (this.nSamples) {
-      if (opts.kind === 'ce') {
-        console.log('Transform y for importance')
+      if (opts.kind === 'ce' || (this.type === 'classification' && !opts.kind)) {
         y = this.yencoder.transform(y).flat()
-        return importance(this, X, y, opts)
-      } else {
-        return importance(this, X, y, opts)
+        opts.kind = 'ce'
+      } else if (this.type === 'regression' && !opts.kind) {
+        opts.kind = 'mae'
       }
+      return importance(this, X, y, opts)
     } else {
       throw new Error('Train the model first')
     }

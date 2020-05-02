@@ -1,6 +1,6 @@
 {
   "name": "random-forest",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Random Forest with WebAssembly and WebWorkers",
   "keywords": [
     "randomforest",

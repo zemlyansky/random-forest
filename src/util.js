@@ -23,7 +23,8 @@ function accuracy (ypred, ytest) {
 
 function normalizeProbs (probs) {
   const sum = probs.reduce((a, v) => a + v, 0)
-  return probs.map(v => v / sum)
+  if (sum > 0) return probs.map(v => v / sum)
+  else return probs.map(v => 1 / probs.length)
 }
 
 function detectType (y) {

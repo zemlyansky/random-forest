@@ -1,12 +1,21 @@
 # random-forest
 
-Random forest method. Ported to JavaScript with WebAssembly. Async computation and multithreading implemented with WebWorkers (for browsers).
+Random forest method ported to JavaScript with WebAssembly.
+Async computation and multithreading implemented with WebWorkers (browsers).
 No tests yet. See examples in the `example` folder. 
 
-* Fast
-* Sync/async modes
-* Threads support
-* CommonJS module
+* Supports regression and classification tasks
+* Faster than existing JS implementations
+* Supports sync and async modes
+* Permutation feature importance
+* Threads support (WebWorkers)
+* CommonJS module with WASM in JS
+
+## Introduction
+Comparing to R and Python, JavaScript ecosystem doesn't have many machine learning packages.
+Of course, there's Tensorflow.js, but not all tasks can be solved with neural nets and optimization.  
+Random forest is a robust ensemble method that fits multiple decision trees under the hood using different subsets of original data. 
+Because of its simple algorithm it's perfectly suited for parallelization and implementation in a native language.
 
 ## Install
 ```
@@ -26,7 +35,7 @@ const rf = new RandomForestClassifier({
   minSamplesLeaf: 5,
   minInfoGain: 0,
 })
-```
+``` 
 
 ### Training, Predicting
 ```javascript

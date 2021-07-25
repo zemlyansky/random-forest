@@ -1,21 +1,16 @@
-# random-forest
+# Random Forest (JavaScript + WebAssembly)
 
-Random forest method ported to JavaScript with WebAssembly.
-Async computation and multithreading implemented with WebWorkers (browsers).
-No tests yet. See examples in the `example` folder. 
+This package includes a WebAssebly port of the native C++ package [RandomForests](https://github.com/handspeaker/RandomForests) wrapped in a JavaScript API. It works in most modern browsers and Node.js. There's experimental support of async computation and multithreading in the browsers, using WebWorkers. Unfortunately, no tests yet. You can find examples in the `example` folder.
 
 * Supports regression and classification tasks
 * Faster than existing JS implementations
 * Supports sync and async modes
 * Permutation feature importance
-* Threads support (WebWorkers)
-* CommonJS module with WASM in JS
+* Threads (WebWorkers)
+* CommonJS module
 
-## Introduction
-Comparing to R and Python, JavaScript ecosystem doesn't have many machine learning packages.
-Of course, there's Tensorflow.js, but not all tasks can be solved with neural nets and optimization.  
-Random forest is a robust ensemble method that fits multiple decision trees under the hood using different subsets of original data. 
-Because of its simple algorithm it's perfectly suited for parallelization and implementation in a native language.
+## Why Random Forests
+Compared to R, Python, or Julia, the JavaScript ecosystem doesn't have many machine learning packages. Of course, there's Tensorflow.js, but sometimes neural nets are not such a good option (e.g., small tabular data). Random forest is a robust ensemble method that fits multiple decision trees under the hood using different subsets of original data. The algorithm has a pretty simple nature but is very powerful, catching non-linear dependencies between variables. It's also ideal for parallelization and implementation in a native language, such as C or C++. Luckily, WebAssembly makes it possible to take an efficient and fast native lib and port it to browsers and Node.js.
 
 ## Install
 ```

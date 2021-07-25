@@ -74,8 +74,10 @@ const { RandomForestClassifier, RandomForestRegressor } = require('random-forest
 
 Currently the `async` mode doesn't support loading/saving models.
 
-## Development
+## Web demo (feature importance)
+The `random-forest` lib is used to calculate variable importance and peform feature selection on [StatSim Select](https://statsim.com/select/) and [StatSim Vis](https://statsim.com/vis/)
 
+## Development
 Contributions are very welcomed. Some insights on how everything works:
 
 **Building steps:**
